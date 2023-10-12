@@ -1,0 +1,29 @@
+{
+  "name": "library_graphql",
+  "version": "1.0.0",
+  "description": "GraphQL backend for small library project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djanyreason/FSO_08.git#main"
+  },
+  "author": "John Anderson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djanyreason/FSO_08/library_GraphQL/issues"
+  },
+  "homepage": "https://github.com/djanyreason/FSO_08/tree/main/library_GraphQL#readme",
+  "devDependencies": {
+    "eslint": "^8.51.0",
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.9.4",
+    "graphql": "^16.8.1"
+  }
+}
