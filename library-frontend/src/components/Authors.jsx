@@ -34,7 +34,7 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
-      <Birthyear />
+      <Birthyear authors={authors} />
     </div>
   );
 };
