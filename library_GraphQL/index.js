@@ -108,7 +108,7 @@ const resolvers = {
         throw new GraphQLError('Creating book failed', {
           extensions: {
             code: 'BAD_USER_INPUT',
-            invalidArgs: args.author,
+            invalidArgs: args.title,
             error
           }
         });
