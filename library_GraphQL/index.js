@@ -21,33 +21,7 @@ mongoose
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message);
   });
-/*
-let authors = [
-  {
-    name: 'Robert Martin',
-    id: 'afa51ab0-344d-11e9-a414-719c6709cf3e',
-    born: 1952
-  },
-  {
-    name: 'Martin Fowler',
-    id: 'afa5b6f0-344d-11e9-a414-719c6709cf3e',
-    born: 1963
-  },
-  {
-    name: 'Fyodor Dostoevsky',
-    id: 'afa5b6f1-344d-11e9-a414-719c6709cf3e',
-    born: 1821
-  },
-  {
-    name: 'Joshua Kerievsky', // birthyear not known
-    id: 'afa5b6f2-344d-11e9-a414-719c6709cf3e'
-  },
-  {
-    name: 'Sandi Metz', // birthyear not known
-    id: 'afa5b6f3-344d-11e9-a414-719c6709cf3e'
-  }
-];
-*/
+
 const typeDefs = `
   type Book {
     title: String!
@@ -90,12 +64,24 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      return Book.find({});
+      const filter = {};
+      if (Object.hasOwn(args, 'author')) {
+        const author = await Author.findOne({ name: args.author });
+        filter.author = author._id;
+      }
+      if (Object.hasOwn(args, 'genre')) {
+        filter.genres = args.genre;
+      }
+      return Book.find(filter);
     },
     allAuthors: async () => Author.find({})
   },
+  Book: {
+    author: async (root) => Author.findById(root.author)
+  },
   Author: {
-    bookCount: (root) => 0 //books.filter((book) => book.author === root.name).length
+    bookCount: async (root) =>
+      Book.collection.countDocuments({ author: root._id })
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -130,17 +116,25 @@ const resolvers = {
 
       return book;
     },
-    editAuthor: (root, args) => {
-      /*const theAuthor = authors.find((author) => author.name === args.name);
-      if (!theAuthor) return null;
+    editAuthor: async (root, args) => {
+      const theAuthor = await Author.findOne({ name: args.name });
 
-      const updatedAuthor = { ...theAuthor, born: args.setBornTo };
-      authors = authors.map((author) =>
-        author.name === args.name ? updatedAuthor : author
-      );
+      if (!args.setBornTo) theAuthor.born = null;
+      else theAuthor.born = args.setBornTo;
 
-      return updatedAuthor;*/
-      return null;
+      try {
+        await theAuthor.save();
+      } catch (error) {
+        throw new GraphQLError('Saving Author failed', {
+          extensions: {
+            coe: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        });
+      }
+
+      return theAuthor;
     }
   }
 };
