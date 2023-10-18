@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../queries';
 import Birthyear from './Birthyear';
+import { useLoginContent } from '../contexts/LoginContext';
 
 const Authors = () => {
   const result = useQuery(ALL_AUTHORS);
+  const login = useLoginContent();
 
   if (result.loading)
     return (
@@ -34,7 +36,7 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
-      <Birthyear authors={authors} />
+      {login ? <Birthyear authors={authors} /> : <></>}
     </div>
   );
 };
