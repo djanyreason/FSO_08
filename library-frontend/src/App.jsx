@@ -4,12 +4,14 @@ import Books from './components/Books';
 import NewBook from './components/NewBook';
 import NavMenu from './components/NavMenu';
 import LoginForm from './components/LoginForm';
+import Recommendations from './components/Recomendations';
 
 const App = () => {
   return (
     <div>
       <NavMenu />
       <Routes>
+        <Route path='/recommend' element={<Recommendations />} />
         <Route path='/login' element={<LoginForm />} />
         <Route path='/add' element={<NewBook />} />
         <Route path='/books' element={<Books />} />

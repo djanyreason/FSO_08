@@ -73,3 +73,13 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const FIND_USER = gql`
+  query {
+    me {
+      favoriteGenre
+      id
+      username
+    }
+  }
+`;

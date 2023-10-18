@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { ALL_BOOKS } from '../queries';
+import BooksList from './BooksList';
 
 const Books = () => {
   const result = useQuery(ALL_BOOKS);
@@ -24,26 +25,11 @@ const Books = () => {
     <div>
       <h2>books</h2>
       in {genre === 'all genres' ? '' : 'genre'} <strong>{genre}</strong>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {books
-            .filter(
-              (b) => genre === 'all genres' || b.genres.indexOf(genre) >= 0
-            )
-            .map((b) => (
-              <tr key={b.id}>
-                <td>{b.title}</td>
-                <td>{b.author.name}</td>
-                <td>{b.published}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <BooksList
+        books={books.filter(
+          (b) => genre === 'all genres' || b.genres.indexOf(genre) >= 0
+        )}
+      />
       <div>
         {genres.map((g) => (
           <button key={g} onClick={() => setGenre(g)} autoFocus>

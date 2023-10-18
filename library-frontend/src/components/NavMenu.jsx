@@ -22,6 +22,11 @@ const NavMenu = () => {
         <></>
       )}
       {login ? (
+        <button onClick={() => navigate('recommend')}>recommend</button>
+      ) : (
+        <></>
+      )}
+      {login ? (
         <button onClick={doLogout}>log out</button>
       ) : (
         <button onClick={() => navigate('login')}>log in</button>
