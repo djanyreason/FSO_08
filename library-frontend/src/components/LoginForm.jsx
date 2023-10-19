@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { LOGIN } from '../queries';
+import { LOGIN, FIND_USER } from '../queries';
 import { useLoginDispatch } from '../contexts/LoginContext';
 
 const LoginForm = () => {
@@ -12,8 +12,18 @@ const LoginForm = () => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
+      console.log(error);
       window.alert(error.graphQLErrors[0].message);
-    }
+    },
+    refetchQueries: [{ query: FIND_USER }]
+    /*    update: (cache, response) => {
+      let meObj = cache.readQuery({ query: FIND_USER });
+      console.log(meObj);
+      if (meObj) {
+        cache.evict({ id: meObj.me.id });
+        console.log(cache.readQuery({ query: FIND_USER }));
+      }
+    }*/
   });
 
   useEffect(() => {
@@ -27,7 +37,7 @@ const LoginForm = () => {
 
   const submit = async (event) => {
     event.preventDefault();
-    login({ variables: { username, password } });
+    await login({ variables: { username, password } });
   };
 
   return (
