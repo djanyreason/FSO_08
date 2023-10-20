@@ -51,6 +51,9 @@ const typeDefs = `
       username: String!
       password: String!
     ): Token
+    auditAuthorBookCount(
+      name: String!
+    ): Author
   }
 
   type Subscription {
