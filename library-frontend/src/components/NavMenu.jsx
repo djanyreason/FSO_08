@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useLoginContent, useLoginDispatch } from '../contexts/LoginContext';
 
 const NavMenu = () => {
   const navigate = useNavigate();
   const login = localStorage.getItem('library-user-token');
-  const dispatch = useLoginDispatch();
 
   const doLogout = () => {
     localStorage.removeItem('library-user-token');
