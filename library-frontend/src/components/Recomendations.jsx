@@ -1,11 +1,19 @@
+import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import { FIND_USER } from '../queries';
 import BooksList from './BooksList';
 
 const Recommendations = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem('library-user-token')) navigate('/');
+  }, [navigate]);
+
   const userResult = useQuery(FIND_USER);
 
-  if (userResult.loading)
+  if (userResult.loading || !userResult?.data?.me)
     return (
       <div>
         <h2>recommendations</h2>
@@ -13,7 +21,6 @@ const Recommendations = () => {
       </div>
     );
 
-  console.log(userResult);
   const genre = userResult.data.me.favoriteGenre;
 
   return (

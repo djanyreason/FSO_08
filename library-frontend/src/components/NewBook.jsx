@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import {
   CREATE_BOOK,
   ALL_AUTHORS,
@@ -14,19 +15,22 @@ const NewBook = () => {
   const [published, setPublished] = useState('');
   const [genre, setGenre] = useState('');
   const [genres, setGenres] = useState([]);
+  const [updateQueries, setUpdateQueries] = useState([
+    { query: ALL_AUTHORS },
+    { query: ALL_GENRES },
+    { query: ALL_BOOKS }
+  ]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem('library-user-token')) navigate('/');
+  }, [navigate]);
 
   const [addBook, result] = useMutation(CREATE_BOOK, {
-    refetchQueries: [
-      { query: ALL_AUTHORS },
-      { query: ALL_BOOKS },
-      { query: ALL_GENRES }
-    ],
+    refetchQueries: updateQueries,
     onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join('\n');
       window.alert(messages);
-    },
-    update: (cache, response) => {
-      console.log(cache, response);
     }
   });
 
@@ -52,11 +56,21 @@ const NewBook = () => {
       setAuthor('');
       setGenres([]);
       setGenre('');
+      setUpdateQueries([
+        { query: ALL_AUTHORS },
+        { query: ALL_GENRES },
+        { query: ALL_BOOKS }
+      ]);
     }
   }, [result.loading, result.error]);
 
   const addGenre = () => {
-    setGenres(genres.concat(genre));
+    if (genres.indexOf(genre) < 0) {
+      setGenres(genres.concat(genre));
+      setUpdateQueries(
+        updateQueries.concat({ query: BOOKS_BY_GENRE, variables: { genre } })
+      );
+    }
     setGenre('');
   };
 

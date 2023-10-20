@@ -24,8 +24,8 @@ const authLink = setContext((_, { headers }) => {
 const httpLink = createHttpLink({ uri: 'http://localhost:4000' });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link: authLink.concat(httpLink)
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

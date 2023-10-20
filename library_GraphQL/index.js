@@ -97,7 +97,10 @@ const resolvers = {
       return Book.find(filter);
     },
     allAuthors: async () => Author.find({}),
-    me: (root, args, context) => context.currentUser
+    me: (root, args, context) => {
+      console.log('me!', context.currentUser);
+      return context.currentUser;
+    }
   },
   Book: {
     author: async (root) => Author.findById(root.author)

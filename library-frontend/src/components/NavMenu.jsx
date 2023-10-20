@@ -3,11 +3,10 @@ import { useLoginContent, useLoginDispatch } from '../contexts/LoginContext';
 
 const NavMenu = () => {
   const navigate = useNavigate();
-  const login = useLoginContent();
+  const login = localStorage.getItem('library-user-token');
   const dispatch = useLoginDispatch();
 
   const doLogout = () => {
-    dispatch({ type: 'LOGOUT' });
     localStorage.removeItem('library-user-token');
     navigate('login');
   };
