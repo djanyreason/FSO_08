@@ -3,7 +3,10 @@ import { BOOKS_BY_GENRE, ALL_BOOKS } from '../queries';
 
 const BooksList = ({ genre }) => {
   const query = genre === 'all genres' ? ALL_BOOKS : BOOKS_BY_GENRE;
-  const variables = genre === 'all genres' ? {} : { variables: { genre } };
+  const variables =
+    genre === 'all genres'
+      ? { fetchPolicy: 'no-cache' }
+      : { variables: { genre }, fetchPolicy: 'no-cache' };
   const result = useQuery(query, variables);
 
   if (result.loading)

@@ -4,7 +4,7 @@ import { ALL_GENRES } from '../queries';
 import BooksList from './BooksList';
 
 const Books = () => {
-  const result = useQuery(ALL_GENRES);
+  const result = useQuery(ALL_GENRES, { fetchPolicy: 'no-cache' });
   const [genre, setGenre] = useState('all genres');
 
   if (result.loading)
