@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import {
-  CREATE_BOOK,
-  ALL_AUTHORS,
-  ALL_BOOKS,
-  ALL_GENRES,
-  BOOKS_BY_GENRE
-} from '../queries';
+import { CREATE_BOOK, ALL_AUTHORS } from '../queries';
+import { doBookCacheUpdates } from '../App';
 
 const NewBook = () => {
   const [title, setTitle] = useState('');
@@ -26,6 +21,9 @@ const NewBook = () => {
     onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join('\n');
       window.alert(messages);
+    },
+    update: (cache, response) => {
+      doBookCacheUpdates(cache, response.data.addBook);
     }
   });
 

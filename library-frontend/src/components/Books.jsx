@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
-import { ALL_GENRES } from '../queries';
+import { ALL_BOOKS } from '../queries';
 import BooksList from './BooksList';
 
 const Books = () => {
-  const result = useQuery(ALL_GENRES, { fetchPolicy: 'no-cache' });
+  const result = useQuery(ALL_BOOKS);
   const [genre, setGenre] = useState('all genres');
 
   if (result.loading)

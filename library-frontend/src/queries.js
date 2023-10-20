@@ -84,14 +84,6 @@ export const FIND_USER = gql`
   }
 `;
 
-export const ALL_GENRES = gql`
-  query {
-    allBooks {
-      genres
-    }
-  }
-`;
-
 export const BOOKS_BY_GENRE = gql`
   query BBG($genre: String) {
     allBooks(genre: $genre) {
